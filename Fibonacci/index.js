@@ -37,9 +37,19 @@ function fibo3(n) {
 function getValue() {
   var input = document.getElementById("in").value;
 
+  var a = performance.now();
   document.getElementById("sol1").innerHTML = fibo(input);
+  var b = performance.now();
+
   document.getElementById("sol2").innerHTML = fibo2(input);
+  var c = performance.now();
+
   document.getElementById("sol3").innerHTML = fibo3(input);
+  var d = performance.now();
+
+  document.getElementById("tps1").innerHTML = b - a;
+  document.getElementById("tps2").innerHTML = c - b;
+  document.getElementById("tps3").innerHTML = d - c;
 }
 
 btn1.addEventListener("click", () => {
