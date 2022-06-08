@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- On peut aussi mettre le fichier JS dans le head mais il faut ajouter le mot clé defer -->
+    <!-- <script defer src="./index.js"></script> -->
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="click-event box">
+      <h4>Quelle est la capitale de la Suisse?</h4>
+      <button id="btn-1">Berne</button>
+      <button id="btn-2">Zurich</button>
+      <p>La bonne réponse est Berne</p>
+    </div>
+
+    <div class="mousemove"></div>
+    <!-- Le fichier JS doit être lu en dernier (bonne pratique et la + utilisée) -->
+    <script src="./dom.js"></script>
+  </body>
+</html>
