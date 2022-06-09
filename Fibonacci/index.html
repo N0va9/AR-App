@@ -10,18 +10,19 @@
   </head>
   <body>
     <h2>Saisissez le n ième terme souhaité de la suite de Fibonacci</h2>
-    <input type="number" placeholder="0" id="in" />
+    <!-- On force l'entrée d'une valeur positive avec onkeyup et onblur -->
+    <input
+      type="number"
+      value="0"
+      id="in"
+      onkeyup="if(this.value<0)this.value=0"
+      onblur="if(this.value<0)this.value=0"
+    />
     <button id="btn1" onclick="getValue();">Valider</button>
     <p id="answer">
-      Fibo itératif : <span id="sol1"></span> trouvé en
-      <span id="tps1"></span> ms.
-      <br />
-      Fibo itéractif amélioré : <span id="sol2"></span> trouvé en
-      <span id="tps2"></span> ms.
-      <br />
-      Fibo récursif : <span id="sol3"></span> trouvé en
-      <span id="tps3"></span> ms.
-      <br />
+      <div id="sol1"></div>
+      <div id="sol2"></div>
+      <div id="sol3"></div>
     </p>
   </body>
 </html>
