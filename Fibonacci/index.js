@@ -37,13 +37,18 @@ function fibo3(n) {
 //Fonction qui s'occupe de l'affichage
 function addTextNode(text, fonc, id) {
   //Variables
-  var newtext = document.createTextNode(text);
-  var p = document.getElementById(id);
-  var n = document.getElementById("in").value;
-  var tps1, tps2;
+  let newtext = document.createTextNode(text);
+  let p = document.getElementById(id);
+  let n = document.getElementById("in").value;
+  let tps1, tps2;
 
+  //Clear des enfants
+  for (let index = 0; index < p.children.length; index++) {
+    console.log("je suis dans la boucle");
+    console.log(children[index]);
+    p.removeChild(children[index]);
+  }
   //Affichage
-
   p.appendChild(newtext);
 
   //Calcul d'exécution de la fonction
