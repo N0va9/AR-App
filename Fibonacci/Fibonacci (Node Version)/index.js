@@ -34,42 +34,53 @@ function fibo3(n) {
   return n < 1 ? 0 : n <= 2 ? 1 : fibo3(n - 1) + fibo3(n - 2);
 }
 
+function makeTextNode(prefix, value, time) {
+  let s = prefix + " " + value + " " + time;
+  return document.createTextNode(s);
+}
+
+function makeTextNode(prefix, value, time) {
+  let s = prefix + " " + value + " " + time;
+
+  return document.createTextNode(s);
+}
+
 //Fonction qui s'occupe de l'affichage
+
 function addTextNode(text, fonc, id) {
   //Variables
   let newtext = document.createTextNode(text);
   let p = document.getElementById(id);
   let n = document.getElementById("in").value;
+  let r = document.createElement("p");
   let tps1, tps2;
 
   //Clear des enfants
   for (let index = 0; index < p.children.length; index++) {
-    console.log("je suis dans la boucle");
-    console.log(children[index]);
-    p.removeChild(children[index]);
+    p.removeChild(p.children[index]);
   }
-  //Affichage
-  p.appendChild(newtext);
 
   //Calcul d'exécution de la fonction
   tps1 = performance.now();
-  p.appendChild(document.createTextNode(fonc(n)));
+  let result = fonc(n);
   tps2 = performance.now();
 
   //Affichage du calcul
-  p.appendChild(
-    document.createTextNode(" trouvé en " + (tps2 - tps1) + "ms.\r")
+
+  r.appendChild(
+    makeTextNode(text, result, "trouvé en " + (tps2 - tps1) + "ms.\r")
   );
+
+  p.appendChild(r);
 }
 
 function getValue() {
   addTextNode("Fibo itératif :", fibo, "sol1");
-  addTextNode("Fibo itératif amélioré :", fibo2, "sol2");
-  addTextNode("Fibo récursif :", fibo3, "sol3");
+  // addTextNode("Fibo itératif amélioré :", fibo2, "sol2");
+  // addTextNode("Fibo récursif :", fibo3, "sol3");
 }
 
-btn1.addEventListener("click", () => {
-  answer.classList.add("show-answer");
-});
+//évitez innerHTML -> préférez document.createTextNode, elemznt.appendChild
+//TextNode un seul noeud
 
-//évitez innerHTML -> préférez document.createTextNode, zlzmznt.appendChild
+//capture et bubbling -> propagation d'events

@@ -11,6 +11,7 @@ body {
     margin: 0;
     color:white;
     min-height: 200vh;
+    overflow-x: hidden;
 }
 
 .box {
@@ -44,5 +45,8 @@ p {
     width: 50px;
     border: 2px solid orange;
     position: absolute;
+    transform: translate(-50%, -50%);
     border-radius: 50px;
+    z-index: -1;
+    /* transition: 0.05s ease; */
 }
