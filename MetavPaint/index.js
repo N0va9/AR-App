@@ -14,7 +14,7 @@ const ctx = canvas.getContext("2d"); //Context for the canvas for 2 dimensional 
 let paint = false; //False to indicates if we drawing or not
 let color = "black";
 let actualWidth = 10;
-let widthMenu = window.innerWidth * 0.05;
+let widthMenu = window.innerWidth * 0.1;
 
 //////////////////////// FUNCTIONS ////////////////////////////////////
 //Resizes the canvas to the available size of the window
@@ -40,6 +40,7 @@ function sketch(x, y) {
 
 window.addEventListener("mousedown", () => {
   paint = true;
+  //mémoriser le dernier point -> changement de coordonnées
 });
 
 window.addEventListener("mouseup", () => {
@@ -112,4 +113,6 @@ Un classique outil de dessin
 - Choix de la couleur
 - Possibilité de sauvegarder l'oeuvre au format png en laissant l'utilisateur 
 choisir le nom du fichier
+
+Taux de rafraichissement 
 */
