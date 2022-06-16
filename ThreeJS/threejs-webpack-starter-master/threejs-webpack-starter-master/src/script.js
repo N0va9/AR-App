@@ -1,14 +1,14 @@
 import "./style.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import * as dat from "dat.gui";
+import { GUI } from "dat.gui";
 
 //Loading
 const textureLoader = new THREE.TextureLoader();
 const normalTexture = textureLoader.load("/textures/texture.png");
 
 // Debug
-const gui = new dat.GUI();
+const gui = new GUI();
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -42,6 +42,11 @@ function addPointLight(name, color, x, y, z) {
   //Add the point light at the scene
   scene.add(actualPointLight);
 
+  createFolderVariables(name, actualPointLight, color);
+}
+
+//Function to vary differents variables
+function createFolderVariables(name, actualPointLight, color) {
   //Set all the variables on a folder where we can variate the values
   const light = gui.addFolder(name);
 
@@ -60,18 +65,13 @@ function addPointLight(name, color, x, y, z) {
   });
 
   //Show where comes from the light
-  //   const pointLightHelper = new THREE.PointLightHelper(actualPointLight, 1);
-  //   scene.add(pointLightHelper);
+  // const pointLightHelper = new THREE.PointLightHelper(actualPointLight, 1);
+  // scene.add(pointLightHelper);
 }
 
-const pointLight = new THREE.PointLight(0xffffff, 0.1);
-pointLight.position.x = 2;
-pointLight.position.y = 3;
-pointLight.position.z = 4;
-scene.add(pointLight);
-
-addPointLight("PointLight 1", 0xffdf, 1.5, -1.5, -2);
-addPointLight("PointLight 2", 0xff0000, -1.5, 1.5, -2);
+addPointLight("PointLight 1", 0xffffff, 2, 3, 4);
+addPointLight("PointLight 2", 0xffdf, 1.5, 1, -2);
+addPointLight("PointLight 3", 0xff0000, -1.5, 1, 3);
 
 /**
  * Sizes
@@ -128,13 +128,39 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  * Animate
  */
 
+let mouseX = 0;
+let mouseY = 0;
+
+let targetX = 0;
+let targetY = 0;
+
+const windowX = window.innerWidth / 2;
+const windowY = window.innerHeight / 2;
+
+document.addEventListener("mousemove", (event) => {
+  mouseX = event.clientX - windowX;
+  mouseY = event.clientY - windowY;
+});
+
+window.addEventListener("scroll", () => {
+  sphere.position.y = window.scrollY * 0.001;
+});
+
 const clock = new THREE.Clock();
 
 const tick = () => {
+  targetX = mouseX * 0.001;
+  targetY = mouseY * 0.001;
+
   const elapsedTime = clock.getElapsedTime();
 
   // Update objects
-  sphere.rotation.y = 0.5 * elapsedTime;
+  sphere.rotation.y = 0.5 * elapsedTime; //turns on itself
+
+  //Turns depends on the mouse's position
+  sphere.rotation.x += 0.05 * (targetY - sphere.rotation.x);
+  sphere.rotation.y += 0.5 * (targetX - sphere.rotation.y);
+  sphere.position.z += -0.05 * (targetY - sphere.rotation.x);
 
   // Update Orbital Controls
   // controls.update()
