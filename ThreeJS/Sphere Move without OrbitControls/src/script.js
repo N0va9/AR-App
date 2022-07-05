@@ -4,8 +4,8 @@ import { GUI } from "dat.gui";
 
 class Point {
   constructor(x, y, bool) {
-    this.x = x;
-    this.y = y;
+    this.x = x - window.innerWidth / 4;
+    this.y = y - window.innerHeight / 4;
     this.bool = bool;
   }
 
@@ -22,7 +22,6 @@ class Point {
   static distance(a, b) {
     return Math.hypot(a.x - b.x, a.y - b.y);
   }
-
 }
 
 let start;
@@ -158,10 +157,17 @@ window.addEventListener("resize", () => {
 });
 
 function move(point1, point2) {
-  
-} 
+  if (point1 != undefined) {
+    if (point2 != undefined) {
+      const a = new THREE.Vector2(point2.x - point1.x, point2.y - point1.y);
 
-
+      //Turn depends of the points values
+      // sphere.rotation.x += ;
+      // sphere.rotation.y += ;
+      // sphere.position.z += ;
+    }
+  }
+}
 
 canvas.addEventListener("mousedown", (e) => {
   start = new Point(e.pageX, e.pageY, true);
@@ -172,7 +178,7 @@ canvas.addEventListener("mouseup", (e) => {
   end = new Point(e.pageX, e.pageY, false);
   end.show();
 
-  move(start, end)
+  move(start, end);
 });
 
 animate();
