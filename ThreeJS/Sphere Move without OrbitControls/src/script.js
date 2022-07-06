@@ -2,30 +2,35 @@ import "./style.css";
 import * as THREE from "three";
 import { GUI } from "dat.gui";
 
-class Point {
-  constructor(x, y, bool) {
+class Point2D {
+  constructor(x, y) {
     this.x = x - window.innerWidth / 4;
     this.y = y - window.innerHeight / 4;
-    this.bool = bool;
   }
 
   show() {
-    if (this.bool) {
-      console.log("Souris appuyé");
-    } else {
-      console.log("Souris relaché");
-    }
+    return "(" + this.x + ", " + this.y + ")";
+  }
 
+  show2(text) {
+    console.log(text);
     console.log("(" + this.x + ", " + this.y + ")");
   }
 
   static distance(a, b) {
     return Math.hypot(a.x - b.x, a.y - b.y);
   }
+
+  static speedClick(a, b) {
+    return this.distance(a, b) / delta;
+  }
 }
 
-let start;
-let end;
+var start;
+var end;
+var clock = new THREE.Clock();
+var speed = 2;
+var delta = 0;
 
 //Loading
 const textureLoader = new THREE.TextureLoader();
@@ -170,15 +175,43 @@ function move(point1, point2) {
 }
 
 canvas.addEventListener("mousedown", (e) => {
-  start = new Point(e.pageX, e.pageY, true);
-  start.show();
+  delta = clock.getDelta();
+  start = new Point2D(e.pageX, e.pageY);
+  //start.show2("Souris appuyé");
 });
 
 canvas.addEventListener("mouseup", (e) => {
-  end = new Point(e.pageX, e.pageY, false);
-  end.show();
+  end = new Point2D(e.pageX, e.pageY);
+  delta = clock.getDelta();
+
+  //console.log(delta);
+  //end.show2("Souris relaché");
 
   move(start, end);
+});
+
+canvas.addEventListener("mousemove", (e) => {
+  if (start != undefined) {
+    delta = clock.getDelta();
+    var point = new Point2D(e.pageX, e.pageY);
+    //Distance
+    console.log(
+      "Distance -> start : " +
+        start.show() +
+        "  - end : " +
+        point.show() +
+        " => " +
+        Point2D.distance(start, point)
+    );
+
+    //Speed
+    console.log("speed = " + Point2D.speedClick(start, point));
+
+    //Direction
+    console.log("");
+    delta = clock.getDelta();
+    console.log("________________");
+  }
 });
 
 animate();
