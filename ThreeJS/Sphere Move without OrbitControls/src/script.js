@@ -135,18 +135,6 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-/**
- * Animate
- */
-
-const animate = () => {
-  // Render
-  renderer.render(scene, camera);
-
-  // Call tick again on the next frame
-  window.requestAnimationFrame(animate);
-};
-
 window.addEventListener("resize", () => {
   // Update sizes
   sizes.width = window.innerWidth;
@@ -161,40 +149,21 @@ window.addEventListener("resize", () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-function move(point1, point2) {
-  if (point1 != undefined) {
-    if (point2 != undefined) {
-      const a = new THREE.Vector2(point2.x - point1.x, point2.y - point1.y);
-
-      //Turn depends of the points values
-      // sphere.rotation.x += ;
-      // sphere.rotation.y += ;
-      // sphere.position.z += ;
-    }
-  }
-}
+var pressed = false;
 
 canvas.addEventListener("mousedown", (e) => {
+  pressed = true;
   delta = clock.getDelta();
   start = new Point2D(e.pageX, e.pageY);
   //start.show2("Souris appuyé");
 });
 
-canvas.addEventListener("mouseup", (e) => {
-  end = new Point2D(e.pageX, e.pageY);
-  delta = clock.getDelta();
-
-  //console.log(delta);
-  //end.show2("Souris relaché");
-
-  move(start, end);
-});
-
 canvas.addEventListener("mousemove", (e) => {
-  if (start != undefined) {
+  if (start != undefined && pressed == true) {
     delta = clock.getDelta();
     var point = new Point2D(e.pageX, e.pageY);
     //Distance
+    /*
     console.log(
       "Distance -> start : " +
         start.show() +
@@ -210,9 +179,35 @@ canvas.addEventListener("mousemove", (e) => {
     //Direction
     console.log("");
     delta = clock.getDelta();
-    console.log("________________");
+    console.log("________________");*/
+
+    //The rotation speed factor
+    var factor = 10 / canvas.height;
+    var dx = factor * (point.x - start.x);
+    var dy = factor * (point.y - start.y);
+
+    sphere.rotation.x += dy;
+    sphere.rotation.y += dx;
+
+    start = point;
   }
 });
+
+canvas.addEventListener("mouseup", (e) => {
+  pressed = false;
+});
+
+/**
+ * Animate
+ */
+
+const animate = () => {
+  // Render
+  renderer.render(scene, camera);
+
+  // Call tick again on the next frame
+  window.requestAnimationFrame(animate);
+};
 
 animate();
 //Good example of damping : https://threejs.org/examples/#misc_controls_arcball
