@@ -2,30 +2,6 @@ import "./style.css";
 import * as THREE from "three";
 import { GUI } from "dat.gui";
 
-class Point2D {
-  constructor(x, y) {
-    this.x = x - window.innerWidth / 4;
-    this.y = y - window.innerHeight / 4;
-  }
-
-  show() {
-    return "(" + this.x + ", " + this.y + ")";
-  }
-
-  show2(text) {
-    console.log(text);
-    console.log("(" + this.x + ", " + this.y + ")");
-  }
-
-  static distance(a, b) {
-    return Math.hypot(a.x - b.x, a.y - b.y);
-  }
-
-  static speedClick(a, b) {
-    return this.distance(a, b) / delta;
-  }
-}
-
 var start;
 var between;
 var clock = new THREE.Clock();
@@ -107,8 +83,8 @@ addPointLight("PointLight 3", 0xff0000, -1.5, 1, 3);
  * Sizes
  */
 const sizes = {
-  width: window.innerWidth / 2,
-  height: window.innerHeight / 2,
+  width: window.innerWidth / 1.2,
+  height: window.innerHeight / 1.2,
 };
 
 /**
@@ -146,9 +122,12 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
 
   // Update renderer
-  renderer.setSize(sizes.width / 2, sizes.height / 2);
+  renderer.setSize(sizes.width / 1.2, sizes.height / 1.2);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
+
+var targetRotationX = 0;
+var targetRotationY = 0;
 
 canvas.addEventListener("mousedown", (e) => {
   delta = clock.getDelta();
@@ -156,6 +135,7 @@ canvas.addEventListener("mousedown", (e) => {
   calculateDamping = false;
   start = new Point2D(e.pageX, e.pageY);
   between = start;
+
   //start.show2("Souris appuyé");
 });
 
@@ -181,13 +161,20 @@ function moveSphere(e) {
 
     sphere.rotation.x += dy;
     sphere.rotation.y += dx;
-
+    //////
+    targetRotationX = (point.x - start.x) * 0.02;
+    targetRotationY = (point.y - start.y) * 0.02;
+    ////////
     between = point;
   }
 }
 
 function activateDamping() {
   if (calculateDamping) {
+    //horizontal rotation
+    sphere.rotation.y += (targetRotationX - sphere.rotation.y) * 0.1;
+    //vertical rotation
+    sphere.rotation.x += (targetRotationY - sphere.rotation.x) * 0.05;
   }
 }
 
@@ -206,3 +193,27 @@ const animate = () => {
 
 animate();
 //Good example of damping : https://threejs.org/examples/#misc_controls_arcball
+
+class Point2D {
+  constructor(x, y) {
+    this.x = x - window.innerWidth / 4;
+    this.y = y - window.innerHeight / 4;
+  }
+
+  show() {
+    return "(" + this.x + ", " + this.y + ")";
+  }
+
+  show2(text) {
+    console.log(text);
+    console.log("(" + this.x + ", " + this.y + ")");
+  }
+
+  static distance(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+
+  static speedClick(a, b) {
+    return this.distance(a, b) / delta;
+  }
+}
