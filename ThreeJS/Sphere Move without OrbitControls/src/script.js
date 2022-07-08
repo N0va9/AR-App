@@ -27,10 +27,11 @@ class Point2D {
 }
 
 var start;
-var end;
+var between;
 var clock = new THREE.Clock();
-var speed = 2;
 var delta = 0;
+var pressed = false;
+var calculateDamping = false;
 
 //Loading
 const textureLoader = new THREE.TextureLoader();
@@ -149,64 +150,58 @@ window.addEventListener("resize", () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-var pressed = false;
-
 canvas.addEventListener("mousedown", (e) => {
-  pressed = true;
   delta = clock.getDelta();
+  pressed = true;
+  calculateDamping = false;
   start = new Point2D(e.pageX, e.pageY);
+  between = start;
   //start.show2("Souris appuyé");
 });
 
 canvas.addEventListener("mousemove", (e) => {
-  if (start != undefined && pressed == true) {
-    delta = clock.getDelta();
+  moveSphere(e);
+});
+
+canvas.addEventListener("mouseup", (e) => {
+  delta = clock.getDelta();
+  pressed = false;
+  calculateDamping = true;
+});
+
+function moveSphere(e) {
+  //If the user had ever click on the canvas
+  if (pressed == true) {
     var point = new Point2D(e.pageX, e.pageY);
-    //Distance
-    /*
-    console.log(
-      "Distance -> start : " +
-        start.show() +
-        "  - end : " +
-        point.show() +
-        " => " +
-        Point2D.distance(start, point)
-    );
-
-    //Speed
-    console.log("speed = " + Point2D.speedClick(start, point));
-
-    //Direction
-    console.log("");
-    delta = clock.getDelta();
-    console.log("________________");*/
 
     //The rotation speed factor
     var factor = 10 / canvas.height;
-    var dx = factor * (point.x - start.x);
-    var dy = factor * (point.y - start.y);
+    var dx = factor * (point.x - between.x);
+    var dy = factor * (point.y - between.y);
 
     sphere.rotation.x += dy;
     sphere.rotation.y += dx;
 
-    start = point;
+    between = point;
   }
-});
+}
 
-canvas.addEventListener("mouseup", (e) => {
-  pressed = false;
-});
+function activateDamping() {
+  if (calculateDamping) {
+  }
+}
 
 /**
  * Animate
  */
 
 const animate = () => {
-  // Render
-  renderer.render(scene, camera);
-
   // Call tick again on the next frame
   window.requestAnimationFrame(animate);
+
+  activateDamping();
+  // Render
+  renderer.render(scene, camera);
 };
 
 animate();
