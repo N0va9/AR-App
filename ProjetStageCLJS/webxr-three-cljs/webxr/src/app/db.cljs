@@ -20,13 +20,8 @@
 (def start
   (r/atom {:lat nil :long nil}))
 
-;; University
-;; (def end
-;;   (r/atom {:lat 48.840351 :long 2.584502}))
-
-;; At home
 (def end
-  (r/atom {:lat 48.4114626 :long 3.3101796}))
+   (r/atom {:lat 48.840351 :long 2.584502}))
 
 
 (def dist (r/atom {:d nil}))
